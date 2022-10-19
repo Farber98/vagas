@@ -63,26 +63,25 @@ Você deve criar um serviço com os seguintes requisitos:
 
 # Solution:
 
-## Docs:
-
-### Use Cases
+## Use Cases
 
 ![example-uml](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/farber98/vagas/master/internal/docs/useCases/useCases.puml)
 
-### Activity Diagrams
+## Create TX
 
 ![example-uml](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/farber98/vagas/master/internal/docs/activityDiagrams/createTx.puml)
 
-![example-uml](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/farber98/vagas/master/internal/docs/activityDiagrams/fetchFunds.puml)
+![example-uml](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/farber98/vagas/master/internal/docs/sequenceDiagrams/createTx.puml)
+
+## List TXs
 
 ![example-uml](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/farber98/vagas/master/internal/docs/activityDiagrams/listTxs.puml)
 
-### Sequence Diagrams
-
-![example-uml](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/farber98/vagas/master/internal/docs/sequenceDiagrams/createTx.puml)
-
-![example-uml](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/farber98/vagas/master/internal/docs/sequenceDiagrams/fetchFunds.puml)
-
 ![example-uml](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/farber98/vagas/master/internal/docs/sequenceDiagrams/listTxs.puml)
 
+## Fetch Funds
+
+![example-uml](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/farber98/vagas/master/internal/docs/activityDiagrams/fetchFunds.puml)
+
+![example-uml](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/farber98/vagas/master/internal/docs/sequenceDiagrams/fetchFunds.puml)
 
