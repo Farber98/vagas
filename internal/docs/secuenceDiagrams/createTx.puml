@@ -1,0 +1,34 @@
+@startuml
+title createTx
+skinparam responseMessageBelowArrow true
+controller -> service : TransactionsService.ValidateTx(*models.Transaction)
+controller -> service : ClientsService.Fetch(*models.Client)
+service -> db : sp_client_get({id_client})
+alt client doesn't exists
+
+    controller -> service: ClientsService.Create(*models.Client)
+    service -> db : sp_client_create({Client})
+
+end
+
+controller -> service : CardsService.FetchCard(*models.Card)
+service -> db : sp_card_fetch({id_card})
+
+alt card doesn't exists
+
+    controller -> service: CardService.Create(*models.Card)
+    service -> db : sp_card_create({Card})
+
+end
+
+alt card is not registered for that client
+
+    controller -> service: ClientsService.RegisterCard(*models.Client, *models.Card)
+    service -> db : sp_client_register_card({id_client, id_card})
+
+end
+
+controller -> service : TransactionsService.Create(*models.Transaction)
+service -> db : sp_transactions_create({Transaction})
+
+@enduml

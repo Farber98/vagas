@@ -1,0 +1,13 @@
+@startuml Use Cases
+title Use Cases
+left to right direction
+actor "Client" as client
+rectangle PSP {
+  usecase "Create TX" as UC1
+  usecase "List TXs" as UC2
+  usecase "Fetch Funds" as UC3
+}
+client --> UC1
+client --> UC2
+client --> UC3
+@enduml

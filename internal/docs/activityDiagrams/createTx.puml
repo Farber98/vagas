@@ -1,0 +1,29 @@
+@startuml 
+start
+title \t\t\t\t\t\t\tCreate TX
+:Receive TX from Client;
+if (TX is valid) then (yes)
+  if (Client exists) then (yes)
+  else (no)
+    :Creates client;
+  endif
+  if (Card already exists) then (yes)
+    if (Registered for that client) then (yes)
+    else (no)
+      :Registers for that client;
+    endif
+  else (no)
+    :Creates card and registers for that client;
+  endif
+  if (payment_method is debit) then (yes)
+    :Creates (D+0) payable in paid status with 3% fee;
+  else (no)
+     :Creates (D+30) payable in waiting_funds status with 5% fee;
+  endif
+else (no)
+  : Sends error;  
+  stop
+endif
+:Returns created TX data;
+stop
+@enduml

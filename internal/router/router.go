@@ -3,6 +3,7 @@ package router
 import (
 	"log"
 	"pagarme/internal/controllers"
+	infraestructure "pagarme/internal/infraestructures"
 	"pagarme/internal/interfaces"
 	"sync"
 
@@ -14,7 +15,7 @@ var onceEcho sync.Once
 var echoInstance *echo.Echo
 
 //InitRoutes Initializes API routes.
-func Init() *echo.Echo {
+func Init(db *infraestructure.DbHandler) *echo.Echo {
 	onceEcho.Do(func() {
 		e := echo.New()
 		e.Use(middleware.CORS())

@@ -1,0 +1,6 @@
+@startuml
+start
+title List TXs
+:Returns a list with created TXs for a Client;
+stop
+@enduml
