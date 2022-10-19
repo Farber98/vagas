@@ -60,3 +60,29 @@ Você deve criar um serviço com os seguintes requisitos:
 3. Depois que corrigirmos o desafio, te chamaremos para conversar com o time, apresentar o desafio e discutir sobre as decisões que você tomou
 4. Achamos que **1 semana** é um tempo ok para fazer o desafio, mas sabemos que nem todo mundo tem o mesmo nível de disponibilidade. Portanto, nos avise se precisar de mais tempo, ok?
 5. Boa sorte :)
+
+# Solution:
+
+## Docs:
+
+### Use Cases
+
+![example-uml](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/farber98/vagas/master/internal/docs/useCases/useCases.puml)
+
+### Activity Diagrams
+
+![example-uml](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/farber98/vagas/master/internal/docs/activityDiagrams/createTx.puml)
+
+![example-uml](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/farber98/vagas/master/internal/docs/activityDiagrams/fetchFunds.puml)
+
+![example-uml](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/farber98/vagas/master/internal/docs/activityDiagrams/listTxs.puml)
+
+### Sequence Diagrams
+
+![example-uml](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/farber98/vagas/master/internal/docs/sequenceDiagrams/createTx.puml)
+
+![example-uml](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/farber98/vagas/master/internal/docs/sequenceDiagrams/fetchFunds.puml)
+
+![example-uml](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/farber98/vagas/master/internal/docs/sequenceDiagrams/listTxs.puml)
+
+
