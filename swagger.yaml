@@ -1,0 +1,26 @@
+openapi: 3.0.3
+info:
+  title: Pagar.me
+  version: 0.2.4
+  description: Backend challenge
+  contact:
+    email: juanfarberjob@gmail.com
+servers:
+  - url: "http://localhost:9999"
+    description: Local API
+tags:
+  - name: General
+    description: Test to see if the API is up
+  - name: Projects
+    description: Projects operations.
+
+paths:
+  /hello:
+    get:
+      tags:
+        - General
+      summary: Test to see if the API is up
+      description: Test to see if the API is up
+      responses:
+        "200":
+          description: Succesful operation.

@@ -1,34 +1,62 @@
-<img src="https://github.com/pagarme.png" width="127px" height="127px" align="left"/>
+# Desafio Software Engineer, Back-end - Pagar.me
 
-# Venha para o Pagar.me
-:handshake: Venha fazer parte do nosso time: [**estamos contratando!**](https://boards.greenhouse.io/pagarme)
+Nesse desafio você construirá uma versão super simplificada de um Payment Service Provider (PSP) como o Pagar.me e talvez aprender um pouco mais sobre como funcionam pagamentos no Brasil.
 
-## Sobre o Pagar.me
+## Contexto
 
-O Pagar.me é uma empresa de tecnologia que conecta milhares de pessoas através de um ecossistema de pagamentos, abstraindo toda complexidade financeira para que as pessoas foquem em empreender os seus negócios.
+Em sua essência um PSP tem duas funções muito importantes:
 
-Fazemos parte do grupo [Stone Co.](https://stone.co) e juntos estamos transformando o mercado no Brasil, permitindo que cada vez mais pessoas consigam transformar oportunidades em negócios de sucesso.
+1. Permitir que nossos clientes processem transações ("cash-in")
+2. Efetuar os pagamentos dos recebíveis para os nossos clientes ("cash-out")
 
-Somos uma empresa de tecnologia, temos muito orgulho da nossa cultura de engenharia e nos empenhamos para construir um time cheio de energia e disposto a resolver os problemas da indústria com design, produto, tecnologia e com uma preocupação genuína com as pessoas.
+No Pagar.me, nós temos duas entidades que representam essas informações:
 
-:point_right: [**Veja as nossas vagas em aberto**](https://boards.greenhouse.io/pagarme)
+* `transactions`: que representam as informações da compra, dados do cartão, valor, etc
+* `payables`: que representam os recebíveis que pagaremos ao cliente
 
-## Nosso processo de contratação
+> Nota: quando um cliente passa uma transação de crédito, ele normalmente recebe o valor em média apenas 30 dias depois (o que chamamos de D+30), porque é assim que a cadeia financeira (bancos, bandeiras, adquirentes) funciona. Porém é possível receber esse valor antes dos 30 dias através de um mecanismo chamado "antecipação". Se tiver curiosidade, a gente tem artigo que explica sobre isso, mas isso não é necessário para realizar esse desafio: https://pagarme.zendesk.com/hc/pt-br/articles/217029766-O-que-%C3%A9-antecipa%C3%A7%C3%A3o-
 
-Nós entendemos que construir um time com as pessoas certas é o que vai fazer a gente chegar longe. Por isso colocamos muito carinho no nosso processo seletivo e nos preocupamos em entender se o momento da pessoa está casado com o momento da empresa.
+## Requisitos
 
-Durante o nosso processo você vai conversar com diferentes pessoas do time: recrutamento, produto, engenharia e por fim com líderes da empresa. Fazemos isso para que você consiga entender melhor como é trabalhar aqui e também porque aqui entendemos a responsabilidade e importância de trazer novas pessoas para o time.
+Você deve criar um serviço com os seguintes requisitos:
 
-Nosso processo normalmente segue os seguintes steps (que podem variar em alguns casos específicos):
+1. O serviço deve processar transações, recebendo as seguintes informações:
+    * Valor da transação
+    * Descrição da transação. Ex: `'Smartband XYZ 3.0'`
+    * Método de pagamento (`debit_card` ou `credit_card`)
+    * Número do cartão
+    * Nome do portador do cartão
+    * Data de validade do cartão
+    * Código de verificação do cartão (CVV)
+2. O serviço deve retornar uma lista das transações já criadas
+3. Como o número do cartão é uma informação sensível, o serviço só pode armazenar e retornar os 4 últimos dígitos do cartão.
+4. O serviço deve criar os recebíveis do cliente (`payables`), com as seguintes regras:
+    * Se a transação for feita com um cartão de débito:
+        * O payable deve ser criado com status = `paid` (indicando que o cliente já recebeu esse valor)
+        * O payable deve ser criado com a data de pagamento (payment_date) = data da criação da transação (D+0).
+    * Se a transação for feita com um cartão de crédito:
+        * O payable deve ser criado com status = `waiting_funds` (indicando que o cliente vai receber esse dinheiro no futuro)
+        * O payable deve ser criado com a data de pagamento (payment_date) = data da criação da transação + 30 dias (D+30).
+5. No momento de criação dos payables também deve ser descontado a taxa de processamento (que chamamos de `fee`) do cliente. Ex: se a taxa for 5% e o cliente processar uma transação de R$100,00, ele só receberá R$95,00. Considere as seguintes taxas:
+    * 3% para transações feitas com um cartão de débito
+    * 5% para transações feitas com um cartão de crédito
+6. O serviço deve prover um meio de consulta para que o cliente visualize seu saldo com as seguintes informações:
+    * Saldo `available` (disponível): tudo que o cliente já recebeu (payables `paid`)
+    * Saldo `waiting_funds` (a receber): tudo que o cliente tem a receber (payables `waiting_funds`)
 
-* **Candidatura**: você pode se candidatar a uma de nossas vagas aqui: https://boards.greenhouse.io/pagarme
+> Nota: neste desafio, você não precisa se preocupar com parcelamento.
 
-* **Pré-conversa:** alguém do nosso time de recrutamento vai te ligar para confirmar algumas informações e para conhecer um pouco mais sobre você e sobre suas experiências.
+## Restrições
 
-* **1ª Entrevista**: você vai conversar com algumas pessoas do nosso time de produto/engenharia para se aprofundar na sua trajetória e também contar sobre o desafio que temos aqui. Para essa conversa você pode vir conhecer nosso escritório ou podemos fazer remotamente se for mais confortável para você.
+1. O serviço deve ser escrito em Node.js
+2. O serviço deve armazenar informações em um banco de dados. Você pode escolher o banco que achar melhor. Aqui no Pagar.me usamos amplamente PostgreSQL
+3. O projeto deve ter um README.md com todas as instruções sobre como executar e testar o projeto e os serviços disponibilizados.
+4. O projeto deve conter testes automatizados.
 
-* **2ª Entrevista**: essa é uma etapa para nos aprofundarmos na sua experiência técnica. Esse estágio varia de vaga para vaga, mas normalmente consiste em apresentar um case  ou realizar um desafio técnico. No caso do desafio técnico, você envia para gente, nós avaliamos e te chamamos para apresentar. Não acreditamos em "whiteboard interview": queremos entender como você trabalharia em cenários reais.
+## Avaliação
 
-    > Nota: alguns dos nossos desafios estão abertos aqui [nesse repositório](./desafios). Você pode tentar fazê-los para testar seus conhecimentos, mas para se candidatar para uma vaga precisa iniciar o processo pela candidatura no [Greenhouse](https://boards.greenhouse.io/pagarme)
-
-* **3ª Entrevista**: você vai conversar com alguém da liderança de nossa empresa. A ideia é você conhecer um pouco mais sobre a história e também se aprofundar no momento da empresa, tanto as coisas boas, quanto as coisas que precisam ser melhoradas. Espere bastante transparência nessa etapa.
+1. O desafio deve ser enviado para a pessoa do RH que estiver em contato com você, no formato de `.zip` ou um link para um repositório do Github
+2. Iremos te avaliar pela arquitetura do serviço, qualidade do código, entendimento das regras de negócio, capricho com o desafio e o quão preparado esse serviço estaria para ser rodado em produção
+3. Depois que corrigirmos o desafio, te chamaremos para conversar com o time, apresentar o desafio e discutir sobre as decisões que você tomou
+4. Achamos que **1 semana** é um tempo ok para fazer o desafio, mas sabemos que nem todo mundo tem o mesmo nível de disponibilidade. Portanto, nos avise se precisar de mais tempo, ok?
+5. Boa sorte :)
