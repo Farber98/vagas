@@ -1,0 +1,28 @@
+version: "3.3"
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: ./docker/api/Dockerfile
+    ports:
+      - "9999:9999"
+    # Waits that db is ready and starts.
+    depends_on:
+      - db
+
+  db:
+    container_name: mysql
+    build:
+      context: .
+      dockerfile: ./docker/db/Dockerfile
+    ports:
+      - "3306"
+    volumes:
+      - pagarme-docker-data:/var/lib/mysql
+      - ./internal/scripts/ddl.sql:/docker-entrypoint-initdb.d/ddl.sql
+      - ./internal/scripts/sps.sql:/docker-entrypoint-initdb.d/sps.sql
+
+      # persisted storage
+volumes:
+  pagarme-docker-data:
