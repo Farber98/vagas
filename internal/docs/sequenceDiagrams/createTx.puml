@@ -8,8 +8,6 @@ alt client doesn't exists
 
     controller -> service: ClientsService.Create(*models.Client)
     service -> db : sp_client_create({Client})
-    controller -> service: WalletsService.Create(*models.Wallet)
-    service -> db : sp_wallets_create({Wallet})
 
 end
 
