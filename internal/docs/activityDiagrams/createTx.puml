@@ -6,6 +6,7 @@ if (TX is valid) then (yes)
   if (Client exists) then (yes)
   else (no)
     :Creates client;
+    :Creates wallet for that client;
   endif
   if (Card already exists) then (yes)
     if (Registered for that client) then (yes)

@@ -1,6 +1,6 @@
 @startuml
 start
 title Fetch Funds
-:Returns funds classified by TX status;
+:Returns funds from a wallet;
 stop
 @enduml
