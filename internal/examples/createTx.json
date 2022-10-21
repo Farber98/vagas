@@ -1,0 +1,45 @@
+[
+  {
+    "id_client": 1234,
+    "value": 100,
+    "description": "Smartband XYZ 1.0",
+    "payment_method": "debit",
+    "card_number": "1111222233334444",
+    "card_holder": "The Peps",
+    "expire_date": "2022-11-10",
+    "cvv": 123
+  },
+
+  {
+    "id_client": 1234,
+    "value": 200,
+    "description": "Smartband XYZ 2.0",
+    "payment_method": "debit",
+    "card_number": "1111222233334444",
+    "card_holder": "The Peps",
+    "expire_date": "2022-11-10",
+    "cvv": 123
+  },
+
+  {
+    "id_client": 1234,
+    "value": 300,
+    "description": "Smartband XYZ 3.0",
+    "payment_method": "credit",
+    "card_number": "9999888877776666",
+    "card_holder": "The Peps",
+    "expire_date": "2022-11-10",
+    "cvv": 123
+  },
+
+  {
+    "id_client": 1234,
+    "value": 300,
+    "description": "Smartband XYZ 3.0",
+    "payment_method": "credit",
+    "card_number": "9999888877776666",
+    "card_holder": "The Peps",
+    "expire_date": "2022-11-10",
+    "cvv": 123
+  }
+]
