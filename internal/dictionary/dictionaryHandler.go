@@ -26,7 +26,7 @@ const (
 func Init(db *infraestructure.DbHandler) *Handler {
 	onceHandler.Do(func() {
 		cardService := &services.CardsService{Db: db}
-		cardTypes, err := cardService.ListCardTypes()
+		cardTypes, err := cardService.ListTypes()
 		if err != nil {
 			panic(err)
 		}

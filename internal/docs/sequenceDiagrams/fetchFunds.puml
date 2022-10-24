@@ -1,6 +1,6 @@
 @startuml
 title Fetch Funds
 skinparam responseMessageBelowArrow true
-controller -> service : ClientsService.Fetch(*models.Client)
+controller -> service : ClientsService.Fetch(idClient)
 service -> db : sp_client_fetch({id_client})
 @enduml

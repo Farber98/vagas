@@ -11,7 +11,7 @@ alt client doesn't exists
 
 end
 
-controller -> service : CardsService.FetchCardByNumber(*models.Card)
+controller -> service : CardsService.FetchByNumber(Card.Number)
 service -> db : pg_card_fetch_by_number({card_number})
 
 alt card doesn't exists
@@ -23,8 +23,8 @@ end
 
 alt card is not registered for that client
 
-    controller -> service: ClientsService.RegisterCard(*models.Client, *models.Card)
-    service -> db : pg_client_register_card({id_client, id_card})
+    controller -> service: ClientsService.RegisterCard(idCard, idClient)
+    service -> db : pg_client_register_card({id_card, id_client})
 
 end
 

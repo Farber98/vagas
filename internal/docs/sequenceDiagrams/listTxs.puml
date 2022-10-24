@@ -1,6 +1,6 @@
 @startuml
 title List TXs
 skinparam responseMessageBelowArrow true
-controller -> service : ClientsService.ListTransactions(*models.Client)
+controller -> service : ClientsService.ListTransactions(idClient)
 service -> db : sp_client_list_transactions({id_client})
 @enduml
