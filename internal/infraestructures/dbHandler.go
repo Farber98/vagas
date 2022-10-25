@@ -25,6 +25,7 @@ type SpOut []byte
 
 var onceDB sync.Once
 var dbInstance *DbHandler
+var dbTestInstance *DbHandler
 
 const MysqlDatetimeLayout = "2006-01-02 15:04:05"
 
@@ -41,6 +42,19 @@ func ConstructDB() *DbHandler {
 	return dbInstance
 }
 
+//ConstructTestDB calls initDB to initialize test connection.
+func ConstructTestDB() *DbHandler {
+	onceDB.Do(func() {
+		connection, err := initTestDB()
+		if err != nil {
+			log.Println(err.Error())
+			return
+		}
+		dbTestInstance = &DbHandler{Conn: connection, logger: log.Default()}
+	})
+	return dbTestInstance
+}
+
 //GetDB Gets singleton DB connection
 func (h *DbHandler) GetDB() *sql.DB {
 	return h.Conn
@@ -48,6 +62,26 @@ func (h *DbHandler) GetDB() *sql.DB {
 
 func initDB() (*sql.DB, error) {
 	conf := config.Get().DB
+
+	cadena := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?interpolateParams=true&collation=utf8mb4_0900_ai_ci", conf.Username, conf.Password, conf.Host, conf.Port, conf.Schema)
+
+	conn, err := sql.Open("mysql", cadena)
+	if err != nil {
+		return nil, err
+	}
+
+	err = conn.Ping()
+	if err != nil {
+		conn.Close()
+		return nil, err
+	}
+
+	conn.SetConnMaxLifetime(10 * time.Second)
+	return conn, nil
+}
+
+func initTestDB() (*sql.DB, error) {
+	conf := config.Get().DBTest
 
 	cadena := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?interpolateParams=true&collation=utf8mb4_0900_ai_ci", conf.Username, conf.Password, conf.Host, conf.Port, conf.Schema)
 

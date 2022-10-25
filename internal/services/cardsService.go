@@ -39,6 +39,7 @@ func (srv *CardsService) Create(card *models.Cards) (*models.Cards, error) {
 	row := srv.Db.QueryRow("CALL pg_card_create(?)", string(jsonPayload))
 
 	var out infraestructure.SpOut
+	dbCard := &models.Cards{}
 
 	if err := row.Scan(&out); err != nil && err != sql.ErrNoRows {
 		return nil, err
@@ -47,11 +48,11 @@ func (srv *CardsService) Create(card *models.Cards) (*models.Cards, error) {
 		return nil, nil
 	}
 
-	if err := json.Unmarshal(out, card); err != nil {
+	if err := json.Unmarshal(out, dbCard); err != nil {
 		return nil, err
 	}
 
-	return card, nil
+	return dbCard, nil
 }
 
 func (srv *CardsService) Fetch(idCard uint64) (*models.Cards, error) {
@@ -66,7 +67,7 @@ func (srv *CardsService) Fetch(idCard uint64) (*models.Cards, error) {
 	row := srv.Db.QueryRow("CALL pg_card_fetch(?)", string(jsonPayload))
 
 	var out infraestructure.SpOut
-	card := &models.Cards{}
+	dbCard := &models.Cards{}
 
 	if err := row.Scan(&out); err != nil && err != sql.ErrNoRows {
 		return nil, err
@@ -75,16 +76,16 @@ func (srv *CardsService) Fetch(idCard uint64) (*models.Cards, error) {
 		return nil, nil
 	}
 
-	if err := json.Unmarshal(out, card); err != nil {
+	if err := json.Unmarshal(out, dbCard); err != nil {
 		return nil, err
 	}
 
-	return card, nil
+	return dbCard, nil
 }
 
 func (srv *CardsService) FetchByNumber(number string) (*models.Cards, error) {
 	search := models.Search{}
-	search["number"] = number
+	search["card_number"] = number
 
 	jsonPayload, err := json.Marshal(search)
 	if err != nil {
@@ -94,7 +95,7 @@ func (srv *CardsService) FetchByNumber(number string) (*models.Cards, error) {
 	row := srv.Db.QueryRow("CALL pg_card_fetch_by_number(?)", string(jsonPayload))
 
 	var out infraestructure.SpOut
-	card := &models.Cards{}
+	dbCard := &models.Cards{}
 
 	if err := row.Scan(&out); err != nil && err != sql.ErrNoRows {
 		return nil, err
@@ -103,9 +104,9 @@ func (srv *CardsService) FetchByNumber(number string) (*models.Cards, error) {
 		return nil, nil
 	}
 
-	if err := json.Unmarshal(out, card); err != nil {
+	if err := json.Unmarshal(out, dbCard); err != nil {
 		return nil, err
 	}
 
-	return card, nil
+	return dbCard, nil
 }

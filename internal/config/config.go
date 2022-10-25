@@ -18,7 +18,9 @@ func Init() *Config {
 		log.Println("Loading config...")
 		c := Config{}
 		if _, err := toml.DecodeFile("./config.toml", &c); err != nil {
-			panic(err)
+			if _, err := toml.DecodeFile("../../config.toml", &c); err != nil {
+				panic(err)
+			}
 		}
 		if err := c.Check(); err != nil {
 			panic(err)
@@ -57,4 +59,5 @@ func (c *Config) Check() error {
 type Config struct {
 	Context *ContextConfig `toml:"context"`
 	DB      *DBConfig      `toml:"database"`
+	DBTest  *DBConfig      `toml:"database_test"`
 }

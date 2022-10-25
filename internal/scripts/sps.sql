@@ -30,7 +30,7 @@ END$$
 DELIMITER ;
 
 DELIMITER $$
-CREATE DEFINER=`juan`@`localhost` PROCEDURE `pg_card_fetch_by_id`(pIn json)
+CREATE DEFINER=`juan`@`localhost` PROCEDURE `pg_card_fetch`(pIn json)
 BEGIN
 	SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 	SELECT  JSON_OBJECT(
