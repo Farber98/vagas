@@ -3,6 +3,7 @@ package services
 import (
 	"fmt"
 	"math/rand"
+	"pagarme/internal/generators"
 	infraestructure "pagarme/internal/infraestructures"
 	"pagarme/internal/models"
 	"strings"
@@ -25,9 +26,9 @@ func TestCreateTx(t *testing.T) {
 	cardService := &CardsService{Db: db}
 
 	rand.Seed(time.Now().UnixNano())
-	randDebitCardNumber := fmt.Sprintf("%16d", rand.Int63n(1e16))
-	randCreditCardNumber := fmt.Sprintf("%16d", rand.Int63n(1e16))
-	randIdClient := rand.Int31n(1000)
+	randDebitCardNumber := fmt.Sprintf("%16d", generators.RandomInt64(1111111111111111, 9999999999999999))
+	randCreditCardNumber := fmt.Sprintf("%16d", generators.RandomInt64(1111111111111111, 9999999999999999))
+	randIdClient := generators.RandomInt32(1, 499999)
 
 	//Create DEBIT card.
 	debitCard := &models.Cards{

@@ -2,11 +2,10 @@ package services
 
 import (
 	"fmt"
-	"math/rand"
+	"pagarme/internal/generators"
 	infraestructure "pagarme/internal/infraestructures"
 	"pagarme/internal/models"
 	"testing"
-	"time"
 
 	"github.com/go-sql-driver/mysql"
 	"github.com/stretchr/testify/assert"
@@ -22,8 +21,7 @@ func TestCardsService(t *testing.T) {
 	db := infraestructure.ConstructTestDB()
 	service := &CardsService{Db: db}
 
-	rand.Seed(time.Now().UnixNano())
-	randCardNumber := fmt.Sprintf("%16d", rand.Int63n(1e16))
+	randCardNumber := fmt.Sprintf("%16d", generators.RandomInt64(1111111111111111, 9999999999999999))
 	wrongCardNumber := "9999"
 	wrongIdCard := uint64(9999)
 

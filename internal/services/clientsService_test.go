@@ -2,11 +2,10 @@ package services
 
 import (
 	"fmt"
-	"math/rand"
+	"pagarme/internal/generators"
 	infraestructure "pagarme/internal/infraestructures"
 	"pagarme/internal/models"
 	"testing"
-	"time"
 
 	"github.com/go-sql-driver/mysql"
 	"github.com/stretchr/testify/assert"
@@ -19,19 +18,15 @@ func TestClients(t *testing.T) {
 	cardService := &CardsService{Db: db}
 	txService := &TransactionsService{Db: db}
 
-	rand.Seed(time.Now().UnixNano())
-	randCardNumber := fmt.Sprintf("%16d", rand.Int63n(1e16))
-	randIdClient := rand.Int31n(1000)
-	otherRandIdClient := rand.Int31n(1000)
-	//randCardNumber := fmt.Sprintf("%16d", rand.Int63n(1e16))
-
+	randCardNumber := fmt.Sprintf("%16d", generators.RandomInt64(1111111111111111, 9999999999999999))
+	randIdClient := generators.RandomInt32(1, 499999)
+	otherRandIdClient := generators.RandomInt32(1, 500000)
 	wrongIdClient := uint32(99999)
 
 	var createdIdCard uint64
 	var createdIdClient uint32
 
 	//Create card.
-
 	card := &models.Cards{
 		CardTypes: &models.CardTypes{
 			IdCardType: 1,
@@ -42,8 +37,8 @@ func TestClients(t *testing.T) {
 		Cvv:        "123",
 		ExpireDate: "2022-11-10",
 	}
-	createdCard, _ := cardService.Create(card)
 
+	createdCard, _ := cardService.Create(card)
 	createdIdCard = createdCard.IdCard
 
 	t.Run("SUCCESS", func(t *testing.T) {
