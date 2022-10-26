@@ -5,6 +5,7 @@ import (
 	"pagarme/internal/controllers"
 	infraestructure "pagarme/internal/infraestructures"
 	"pagarme/internal/interfaces"
+	"pagarme/internal/services"
 	"sync"
 
 	"github.com/labstack/echo/v4"
@@ -30,8 +31,16 @@ func Init(db *infraestructure.DbHandler) *echo.Echo {
 			},
 		}))
 
+		/* Services */
+		cardsService := &services.CardsService{Db: db}
+		clientsService := &services.ClientsService{Db: db}
+		txsService := &services.TransactionsService{Db: db}
+
+		/* Controllers */
 		arrayControllers := make([]interfaces.IController, 0)
 		arrayControllers = append(arrayControllers, &controllers.HelloController{})
+		arrayControllers = append(arrayControllers, &controllers.ClientsController{ClientsService: clientsService, CardsService: cardsService})
+		arrayControllers = append(arrayControllers, &controllers.TransactionsController{ClientsService: clientsService, TransactionsService: txsService})
 
 		group := e.Group("")
 		for _, c := range arrayControllers {

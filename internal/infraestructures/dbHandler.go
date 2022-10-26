@@ -27,8 +27,6 @@ var onceDB sync.Once
 var dbInstance *DbHandler
 var dbTestInstance *DbHandler
 
-const MysqlDatetimeLayout = "2006-01-02 15:04:05"
-
 //ConstructDB calls initDB to initialize connection.
 func ConstructDB() *DbHandler {
 	onceDB.Do(func() {

@@ -92,6 +92,35 @@ func (srv *ClientsService) Fetch(idClient uint32) (*models.Clients, error) {
 	return client, nil
 }
 
+func (srv *ClientsService) FetchCard(idClient uint32, idCard uint64) (*models.ClientsCards, error) {
+	search := models.Search{}
+	search["id_client"] = idClient
+	search["id_card"] = idClient
+
+	jsonPayload, err := json.Marshal(search)
+	if err != nil {
+		return nil, err
+	}
+
+	row := srv.Db.QueryRow("CALL pg_client_fetch_card(?)", string(jsonPayload))
+
+	var out infraestructure.SpOut
+	client := &models.ClientsCards{}
+
+	if err := row.Scan(&out); err != nil && err != sql.ErrNoRows {
+		return nil, err
+	}
+	if out == nil {
+		return nil, nil
+	}
+
+	if err := json.Unmarshal(out, client); err != nil {
+		return nil, err
+	}
+
+	return client, nil
+}
+
 func (srv *ClientsService) ListTransactions(idClient uint32) ([]*models.Transactions, error) {
 	search := models.Search{}
 	search["id_client"] = idClient

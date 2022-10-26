@@ -21,6 +21,9 @@ alt card doesn't exists
 
 end
 
+controller -> service : ClientsService.FetchCard(idClient, idCard)
+service -> db : pg_client_fetch_card({ClientsCards})
+
 alt card is not registered for that client
 
     controller -> service: ClientsService.RegisterCard(idCard, idClient)

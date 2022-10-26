@@ -99,8 +99,8 @@ COMMIT;
     SELECT  JSON_OBJECT(
             'id_client', c.id_client,
             'id_wallet', w.id_wallet,
-            'available_funds', w.available_funds,
-            'waiting_funds', w.waiting_funds
+            'available_funds', CAST(w.available_funds AS CHAR),
+            'waiting_funds', CAST(w.waiting_funds AS CHAR)
           ) pOut
   FROM    		clients c  
   INNER	JOIN 	wallets w 
@@ -118,13 +118,29 @@ BEGIN
 	SELECT  JSON_OBJECT(
             'id_client', c.id_client,
             'id_wallet', w.id_wallet,
-            'available_funds', w.available_funds,
-            'waiting_funds', w.waiting_funds
+            'available_funds', CAST(w.available_funds AS CHAR),
+            'waiting_funds', CAST(w.waiting_funds AS CHAR)
           ) pOut
 	FROM    		clients c  
 	INNER	JOIN 	wallets w 
 	ON			c.id_client = w.id_wallet
 	WHERE 		c.id_client = pIdClient AND w.id_wallet = pIdClient;
+	SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`juan`@`localhost` PROCEDURE `pg_client_fetch_card`(pIn json)
+BEGIN
+	DECLARE pIdClient INT DEFAULT pIn->>'$.id_client';
+	DECLARE pIdCard BIGINT DEFAULT pIn->>'$.id_card';
+	SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+	SELECT  JSON_OBJECT(
+            'id_client', id_client,
+            'id_card', id_card
+          ) pOut
+	FROM    clients_cards  
+	WHERE	id_client = pIdClient AND id_card = pIdCard;
 	SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
 END$$
 DELIMITER ;
@@ -219,14 +235,15 @@ BEGIN
 
 	SELECT  JSON_OBJECT(
             'id_tx', tx.id_tx,
+            'id_card', ca.id_card,
             'card_number', CONCAT(REPEAT("*",12),RIGHT(ca.number,4)),
             'card_type', ct.card_type,
             'card_holder', ca.cardholder,
             'id_client', tx.id_client,
             'description', tx.description,
             'date', tx.date,
-            'value', tx.value,
-            'fee', tx.fee,
+            'value', CAST(tx.value AS CHAR),
+            'fee', CAST(tx.fee AS CHAR),
             'status', tx.status
           ) pOut
 	FROM    		transactions tx 
