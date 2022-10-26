@@ -2,7 +2,7 @@ package models
 
 type Cards struct {
 	IdCard uint64 `json:"id_card,omitempty"`
-	CardTypes
+	*CardTypes
 	Number     string `json:"card_number,omitempty"`
 	Holder     string `json:"card_holder,omitempty"`
 	Cvv        string `json:"cvv,omitempty"`

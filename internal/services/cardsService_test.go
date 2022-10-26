@@ -1,9 +1,12 @@
 package services
 
 import (
+	"fmt"
+	"math/rand"
 	infraestructure "pagarme/internal/infraestructures"
 	"pagarme/internal/models"
 	"testing"
+	"time"
 
 	"github.com/go-sql-driver/mysql"
 	"github.com/stretchr/testify/assert"
@@ -14,12 +17,19 @@ const (
 	CARD_TYPE_CREDIT = "credit"
 )
 
-func TestListCardTypes(t *testing.T) {
+func TestCardsService(t *testing.T) {
 
 	db := infraestructure.ConstructTestDB()
 	service := &CardsService{Db: db}
 
-	t.Run("SUCCESS_DEBIT_AND_CREDIT_RETURNED", func(t *testing.T) {
+	rand.Seed(time.Now().UnixNano())
+	randCardNumber := fmt.Sprintf("%16d", rand.Int63n(1e16))
+	wrongCardNumber := "9999"
+	wrongIdCard := uint64(9999)
+
+	var createdIdCard uint64
+
+	t.Run("OK_LIST_CARD_TYPES", func(t *testing.T) {
 		expectedOutput := []*models.CardTypes{
 			{
 				IdCardType: 1,
@@ -36,49 +46,44 @@ func TestListCardTypes(t *testing.T) {
 			assert.Equal(t, expectedOutput, cardTypes)
 		}
 	})
-}
 
-func TestCreate(t *testing.T) {
-
-	db := infraestructure.ConstructTestDB()
-	service := &CardsService{Db: db}
-
-	t.Run("SUCCESS", func(t *testing.T) {
+	t.Run("OK_CREATE", func(t *testing.T) {
 
 		input := &models.Cards{
-			CardTypes: models.CardTypes{
+			CardTypes: &models.CardTypes{
 				IdCardType: 1,
 				CardType:   CARD_TYPE_DEBIT,
 			},
-			Number:     "1111222233334444",
+			Number:     randCardNumber,
 			Holder:     "Debit Holder",
 			Cvv:        "123",
 			ExpireDate: "2022-11-10",
 		}
 
 		expectedOutput := &models.Cards{
-			IdCard: 1,
-			CardTypes: models.CardTypes{
+			CardTypes: &models.CardTypes{
 				CardType: CARD_TYPE_DEBIT,
 			},
-			Number:     "1111222233334444",
+			Number:     randCardNumber,
 			Holder:     "Debit Holder",
 			ExpireDate: "2022-11-10",
 		}
 
 		card, err := service.Create(input)
 		if assert.Nil(t, err) {
+			expectedOutput.IdCard = card.IdCard
+			createdIdCard = card.IdCard
 			assert.Equal(t, expectedOutput, card)
 		}
 	})
 
-	t.Run("ERR_ALREADY_EXISTS", func(t *testing.T) {
+	t.Run("ERR_CREATE_NUMBER_ALREADY_EXISTS", func(t *testing.T) {
 
 		input := &models.Cards{
-			CardTypes: models.CardTypes{
+			CardTypes: &models.CardTypes{
 				IdCardType: 1,
 			},
-			Number:     "1111222233334444",
+			Number:     randCardNumber,
 			Holder:     "Debit Holder",
 			Cvv:        "123",
 			ExpireDate: "2022-11-10",
@@ -86,7 +91,7 @@ func TestCreate(t *testing.T) {
 
 		expectedError := &mysql.MySQLError{
 			Number:  0x426,
-			Message: "Duplicate entry '1111222233334444' for key 'cards.ui_number'",
+			Message: "Duplicate entry '" + randCardNumber + "' for key 'cards.ui_number'",
 		}
 
 		_, err := service.Create(input)
@@ -94,73 +99,54 @@ func TestCreate(t *testing.T) {
 			assert.Equal(t, err.Error(), expectedError.Error())
 		}
 	})
-}
 
-func TestFetchCard(t *testing.T) {
-
-	db := infraestructure.ConstructTestDB()
-	service := &CardsService{Db: db}
-
-	t.Run("SUCCESS", func(t *testing.T) {
-		idCard := uint64(1)
-
+	t.Run("OK_FETCH", func(t *testing.T) {
 		expectedOutput := &models.Cards{
-			IdCard: 1,
-			CardTypes: models.CardTypes{
+			IdCard: createdIdCard,
+			CardTypes: &models.CardTypes{
 				CardType: CARD_TYPE_DEBIT,
 			},
-			Number:     "1111222233334444",
+			Number:     randCardNumber,
 			Holder:     "Debit Holder",
 			ExpireDate: "2022-11-10",
 		}
 
-		card, err := service.Fetch(idCard)
+		card, err := service.Fetch(createdIdCard)
 		if assert.Nil(t, err) {
 			assert.Equal(t, expectedOutput, card)
 		}
 	})
 
-	t.Run("NOT_EXISTS", func(t *testing.T) {
-		idCard := uint64(15)
-
+	t.Run("ERR_NOT_EXISTS_FETCH", func(t *testing.T) {
 		var expectedOutput *models.Cards
 
-		card, err := service.Fetch(idCard)
+		card, err := service.Fetch(wrongIdCard)
 		if assert.Nil(t, err) {
 			assert.Equal(t, expectedOutput, card)
 		}
 	})
-}
-func TestFetchCardByNumber(t *testing.T) {
 
-	db := infraestructure.ConstructTestDB()
-	service := &CardsService{Db: db}
-
-	t.Run("SUCCESS", func(t *testing.T) {
-		number := "1111222233334444"
-
+	t.Run("OK_FETCH_BY_NUMBER", func(t *testing.T) {
 		expectedOutput := &models.Cards{
-			IdCard: 1,
-			CardTypes: models.CardTypes{
+			IdCard: createdIdCard,
+			CardTypes: &models.CardTypes{
 				CardType: CARD_TYPE_DEBIT,
 			},
-			Number:     "1111222233334444",
+			Number:     randCardNumber,
 			Holder:     "Debit Holder",
 			ExpireDate: "2022-11-10",
 		}
 
-		card, err := service.FetchByNumber(number)
+		card, err := service.FetchByNumber(randCardNumber)
 		if assert.Nil(t, err) {
 			assert.Equal(t, expectedOutput, card)
 		}
 	})
 
-	t.Run("NOT_EXISTS", func(t *testing.T) {
-		number := "9999999999999999"
-
+	t.Run("ERR_NOT_EXISTS_FETCH_BY_NUMBER", func(t *testing.T) {
 		var expectedOutput *models.Cards
 
-		card, err := service.FetchByNumber(number)
+		card, err := service.FetchByNumber(wrongCardNumber)
 		if assert.Nil(t, err) {
 			assert.Equal(t, expectedOutput, card)
 		}
