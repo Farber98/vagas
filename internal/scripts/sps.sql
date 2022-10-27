@@ -210,6 +210,7 @@ BEGIN
 		INSERT INTO log_sp VALUES(0, NOW(), 'pg_transactions_create', @full_error, pIn);
 		RESIGNAL;
 	END;
+	SET SESSION TRANSACTION ISOLATION LEVEL SERIALIZABLE;
 
 	START TRANSACTION;
 		SELECT 	id_wallet, available_funds, waiting_funds 
@@ -250,5 +251,6 @@ BEGIN
 	INNER	JOIN 	cards ca USING(id_card)
 	INNER	JOIN    card_types ct USING(id_card_type)
 	WHERE			id_tx = pIdTx;
+  	SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
 END$$
 DELIMITER ;

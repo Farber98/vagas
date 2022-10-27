@@ -95,7 +95,7 @@ func (srv *ClientsService) Fetch(idClient uint32) (*models.Clients, error) {
 func (srv *ClientsService) FetchCard(idClient uint32, idCard uint64) (*models.ClientsCards, error) {
 	search := models.Search{}
 	search["id_client"] = idClient
-	search["id_card"] = idClient
+	search["id_card"] = idCard
 
 	jsonPayload, err := json.Marshal(search)
 	if err != nil {

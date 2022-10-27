@@ -54,7 +54,7 @@ func TestCardsService(t *testing.T) {
 			},
 			Number:     randCardNumber,
 			Holder:     "Debit Holder",
-			Cvv:        "123",
+			Cvv:        fmt.Sprintf("%3d", generators.RandomInt64(100, 999)),
 			ExpireDate: "2022-11-10",
 		}
 
@@ -83,7 +83,7 @@ func TestCardsService(t *testing.T) {
 			},
 			Number:     randCardNumber,
 			Holder:     "Debit Holder",
-			Cvv:        "123",
+			Cvv:        fmt.Sprintf("%3d", generators.RandomInt64(100, 999)),
 			ExpireDate: "2022-11-10",
 		}
 

@@ -21,31 +21,31 @@ func (controller *TransactionsController) LoadRoutes(gr *echo.Group) {
 }
 
 func (controller *TransactionsController) Create(c echo.Context) error {
-	tx := &models.Transactions{}
+	reqTx := &models.Transactions{}
 
-	if err := c.Bind(tx); err != nil {
+	if err := c.Bind(reqTx); err != nil {
 		return c.JSON(http.StatusInternalServerError, models.NewMsgResponse(constants.ERR_BINDING))
 	}
 
-	err := controller.TransactionsService.Validate(tx)
+	err := controller.TransactionsService.Validate(reqTx)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, models.NewMsgResponse(err.Error()))
 	}
 
-	client, err := controller.ClientsService.Fetch(tx.IdClient)
+	client, err := controller.ClientsService.Fetch(reqTx.IdClient)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, models.NewMsgResponse(constants.ERR_DEFAULT))
 	}
 
 	if client == nil {
-		client = &models.Clients{IdClient: tx.IdClient}
+		client = &models.Clients{IdClient: reqTx.IdClient}
 		client, err = controller.ClientsService.Create(client)
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, models.NewMsgResponse(constants.ERR_DEFAULT))
 		}
 	}
 
-	card, err := controller.CardsService.FetchByNumber(tx.Cards.Number)
+	card, err := controller.CardsService.FetchByNumber(reqTx.Cards.Number)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, models.NewMsgResponse(constants.ERR_DEFAULT))
 	}
@@ -53,12 +53,12 @@ func (controller *TransactionsController) Create(c echo.Context) error {
 	if card == nil {
 		card = &models.Cards{
 			CardTypes: &models.CardTypes{
-				IdCardType: uint8(dictionaries.Get().CardTypes[tx.PaymentMethod]),
+				IdCardType: uint8(dictionaries.Get().CardTypes[reqTx.PaymentMethod]),
 			},
-			Number:     tx.Cards.Number,
-			Cvv:        tx.Cards.Cvv,
-			Holder:     tx.Cards.Holder,
-			ExpireDate: tx.Cards.ExpireDate,
+			Number:     reqTx.Cards.Number,
+			Cvv:        reqTx.Cards.Cvv,
+			Holder:     reqTx.Cards.Holder,
+			ExpireDate: reqTx.Cards.ExpireDate,
 		}
 
 		card, err = controller.CardsService.Create(card)
@@ -79,8 +79,14 @@ func (controller *TransactionsController) Create(c echo.Context) error {
 		}
 	}
 
-	tx.Cards = card
-	tx.IdClient = client.IdClient
+	tx := &models.Transactions{
+		IdClient: client.IdClient,
+		Cards: &models.Cards{
+			IdCard: card.IdCard,
+		},
+		Value:       reqTx.Value,
+		Description: reqTx.Description,
+	}
 
 	tx, err = controller.TransactionsService.Create(tx)
 	if err != nil {
