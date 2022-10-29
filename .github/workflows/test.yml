@@ -24,7 +24,7 @@ jobs:
         image: mysql:8.0
         ports:
           # Maps tcp port 3306 on service container to the host
-          - 3306/tcp
+          - 3306:3306
         env:
           MYSQL_USER: ${{ env.MYSQL_USER }}
           MYSQL_PASSWORD: ${{ env.MYSQL_PASSWORD }}
