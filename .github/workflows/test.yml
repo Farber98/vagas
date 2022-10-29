@@ -8,10 +8,12 @@ on:
 
 jobs:
   test:
+    name: Setup Ubuntu
     runs-on: ubuntu-latest
 
     steps:
       - name: Set up MySQL
+      - uses: actions/setup-go@v3
       - run: |
           sudo /etc/init.d/mysql start
           mysql -e 'CREATE DATABASE IF NOT EXISTS pagarme_test;' -uroot -proot
