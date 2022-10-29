@@ -5,12 +5,12 @@ debug = true
 docker = true
 
 [database]
-username = "root"
+username = "juan"
 password = "juan"
 schema = "pagarme"
 
 [database_test]
-username = "root"
+username = "juan"
 password = "juan"
 schema = "pagarme_test"
 
