@@ -9,37 +9,12 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    env:
-      MYSQL_USER: juan
-      MYSQL_PASSWORD: juan
-      MYSQL_ROOT_PASSWORD: juan
-      MYSQL_DATABASE: pagarme_test
-
-    # Service containers to run with `container-job`
-    services:
-      # Label used to access the service container
-      mysql:
-        # Docker Hub image
-        image: mysql:8.0
-        env:
-          MYSQL_USER: root
-          MYSQL_PASSWORD: juan
-          MYSQL_ROOT_PASSWORD: juan
-          MYSQL_DATABASE: pagarme_test
-        # Set health checks to wait until mysql has started
-        options: >-
-          --health-cmd="mysqladmin ping"
-          --health-interval 10s
-          --health-timeout 10s
-          --health-retries 10
-        ports:
-          # Maps tcp port 3306 on service container to the host
-          - 3306:3306
 
     steps:
+      - name: Set up MySQL
       - run: |
           sudo /etc/init.d/mysql start
-          mysql -e 'CREATE DATABASE IF NOT EXISTS pagarme_test;' -ujuan -pjuan
+          mysql -e 'CREATE DATABASE IF NOT EXISTS pagarme_test;' -uroot -proot
           mysql -e 'SHOW DATABASES;' -uroot -proot
 
       - name: Set up Go 1.18
