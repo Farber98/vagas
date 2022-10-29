@@ -50,7 +50,7 @@ jobs:
           sudo mv migrate /usr/bin/migrate
           which migrate
 
-      - name: Run ddl
+      - name: Create tables and stored procedures.
         run: make ddl
 
       - name: Test

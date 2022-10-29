@@ -1,5 +1,5 @@
 tests:
 	go test -cover -race -v -count=1 ./...
 
-ddl: 
-	migrate -path internal/scripts/ddl.sql -database "mysql://juan:juan@tcp(localhost:3306)/pagarme_test" -verbose up
+database:
+	migrate -path internal/migrations -database "mysql://juan:juantuc98@tcp(localhost:3306)/pagarme_test?multiStatements=true" -verbose up
