@@ -14,5 +14,7 @@ COPY --from=builder /go/bin /app
 
 WORKDIR /app
 COPY config.toml .
-CMD ./pagarme
+COPY wait-for.sh .
+RUN chmod +x wait-for.sh
 EXPOSE 9999
+CMD ./pagarme

@@ -10,6 +10,7 @@ services:
     # Waits that db is ready and starts.
     depends_on:
       - db
+    entrypoint: ["/app/wait-for.sh", "mysql:3306", "--", "/app/pagarme"]
 
   db:
     container_name: mysql

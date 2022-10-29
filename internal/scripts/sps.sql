@@ -1,5 +1,5 @@
 DELIMITER $$
-CREATE DEFINER=`juan`@`localhost` PROCEDURE `pg_card_create`(pIn json)
+CREATE  PROCEDURE `pg_card_create`(pIn json)
 SALIR:BEGIN
 	DECLARE pIdCard BIGINT;
     
@@ -30,7 +30,7 @@ END$$
 DELIMITER ;
 
 DELIMITER $$
-CREATE DEFINER=`juan`@`localhost` PROCEDURE `pg_card_fetch`(pIn json)
+CREATE  PROCEDURE `pg_card_fetch`(pIn json)
 BEGIN
 	SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 	SELECT  JSON_OBJECT(
@@ -47,7 +47,7 @@ END$$
 DELIMITER ;
 
 DELIMITER $$
-CREATE DEFINER=`juan`@`localhost` PROCEDURE `pg_card_fetch_by_number`(pIn json)
+CREATE  PROCEDURE `pg_card_fetch_by_number`(pIn json)
 BEGIN
 	SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 	SELECT  JSON_OBJECT(
@@ -64,7 +64,7 @@ END$$
 DELIMITER ;
 
 DELIMITER $$
-CREATE DEFINER=`juan`@`localhost` PROCEDURE `pg_card_list_types`()
+CREATE  PROCEDURE `pg_card_list_types`()
 BEGIN
 	SELECT  COALESCE(JSON_ARRAYAGG(
             JSON_OBJECT(
@@ -77,7 +77,7 @@ END$$
 DELIMITER ;
 
 DELIMITER $$
-CREATE DEFINER=`juan`@`localhost` PROCEDURE `pg_client_create`(pIn json)
+CREATE  PROCEDURE `pg_client_create`(pIn json)
 BEGIN
 	DECLARE pError CONDITION FOR SQLSTATE '45000';
     DECLARE pIdClient INT DEFAULT pIn->>'$.id_client';
@@ -111,7 +111,7 @@ END$$
 DELIMITER ;
 
 DELIMITER $$
-CREATE DEFINER=`juan`@`localhost` PROCEDURE `pg_client_fetch`(pIn json)
+CREATE  PROCEDURE `pg_client_fetch`(pIn json)
 BEGIN
 	DECLARE pIdClient INT DEFAULT pIn->>'$.id_client';
 	SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
@@ -130,7 +130,7 @@ END$$
 DELIMITER ;
 
 DELIMITER $$
-CREATE DEFINER=`juan`@`localhost` PROCEDURE `pg_client_fetch_card`(pIn json)
+CREATE  PROCEDURE `pg_client_fetch_card`(pIn json)
 BEGIN
 	DECLARE pIdClient INT DEFAULT pIn->>'$.id_client';
 	DECLARE pIdCard BIGINT DEFAULT pIn->>'$.id_card';
@@ -146,7 +146,7 @@ END$$
 DELIMITER ;
 
 DELIMITER $$
-CREATE DEFINER=`juan`@`localhost` PROCEDURE `pg_client_list_transactions`(pIn json)
+CREATE  PROCEDURE `pg_client_list_transactions`(pIn json)
 BEGIN
 
 SET SESSION GROUP_CONCAT_MAX_LEN = 1024 * 1024 * 1024;
@@ -175,7 +175,7 @@ END$$
 DELIMITER ;
 
 DELIMITER $$
-CREATE DEFINER=`juan`@`localhost` PROCEDURE `pg_client_register_card`(pIn json)
+CREATE  PROCEDURE `pg_client_register_card`(pIn json)
 BEGIN
 	INSERT INTO clients_cards VALUES(pIn->>'$.id_card', pIn->>'$.id_client', NOW());
      SELECT  JSON_OBJECT(
@@ -188,7 +188,7 @@ END$$
 DELIMITER ;
 
 DELIMITER $$
-CREATE DEFINER=`juan`@`localhost` PROCEDURE `pg_transactions_create`(pIn json)
+CREATE  PROCEDURE `pg_transactions_create`(pIn json)
 BEGIN
 
     DECLARE pIdCard BIGINT DEFAULT pIn->>'$.id_card';

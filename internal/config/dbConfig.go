@@ -12,12 +12,12 @@ type DBConfig struct {
 }
 
 func (conf *DBConfig) SelfCheck() error {
-	if conf.Host == "" {
+	/* if conf.Host == "" {
 		return errors.New("invalid host")
 	}
 	if conf.Port == "" {
 		return errors.New("invalid port")
-	}
+	} */
 	if conf.Username == "" {
 		return errors.New("invalid username")
 	}

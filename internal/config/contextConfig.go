@@ -7,9 +7,10 @@ import (
 
 // ContextConfig Context config model
 type ContextConfig struct {
-	Host  string `toml:"host"`
-	Port  string `toml:"port"`
-	Debug bool   `toml:"debug"`
+	Host   string `toml:"host"`
+	Port   string `toml:"port"`
+	Debug  bool   `toml:"debug"`
+	Docker bool   `toml:"docker"`
 }
 
 func (conf *ContextConfig) SelfCheck() error {

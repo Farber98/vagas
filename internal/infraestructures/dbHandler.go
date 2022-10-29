@@ -61,7 +61,12 @@ func (h *DbHandler) GetDB() *sql.DB {
 func initDB() (*sql.DB, error) {
 	conf := config.Get().DB
 
-	cadena := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?interpolateParams=true&collation=utf8mb4_0900_ai_ci", conf.Username, conf.Password, conf.Host, conf.Port, conf.Schema)
+	var cadena string
+	if config.Get().Context.Docker {
+		cadena = fmt.Sprintf("%s:%s@tcp(mysql)/%s?interpolateParams=true&collation=utf8mb4_0900_ai_ci", conf.Username, conf.Password, conf.Schema)
+	} else {
+		cadena = fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?interpolateParams=true&collation=utf8mb4_0900_ai_ci", conf.Username, conf.Password, conf.Host, conf.Port, conf.Schema)
+	}
 
 	conn, err := sql.Open("mysql", cadena)
 	if err != nil {
@@ -81,7 +86,12 @@ func initDB() (*sql.DB, error) {
 func initTestDB() (*sql.DB, error) {
 	conf := config.Get().DBTest
 
-	cadena := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?interpolateParams=true&collation=utf8mb4_0900_ai_ci", conf.Username, conf.Password, conf.Host, conf.Port, conf.Schema)
+	var cadena string
+	if config.Get().Context.Docker {
+		cadena = fmt.Sprintf("%s:%s@tcp(mysql)/%s?interpolateParams=true&collation=utf8mb4_0900_ai_ci", conf.Username, conf.Password, conf.Schema)
+	} else {
+		cadena = fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?interpolateParams=true&collation=utf8mb4_0900_ai_ci", conf.Username, conf.Password, conf.Host, conf.Port, conf.Schema)
+	}
 
 	conn, err := sql.Open("mysql", cadena)
 	if err != nil {
