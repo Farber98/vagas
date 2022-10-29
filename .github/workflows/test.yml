@@ -51,7 +51,7 @@ jobs:
           which migrate
 
       - name: Create tables and stored procedures.
-        run: make ddl
+        run: make database
 
       - name: Test
         run: make tests
