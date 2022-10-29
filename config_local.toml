@@ -8,12 +8,12 @@ docker = false
 host = "localhost"
 port = "3306"
 username = "juan"
-password = "juantuc98"
+password = "juan"
 schema = "pagarme_test"
 
 [database]
 host = "localhost"
 port = "3306"
 username = "juan"
-password = "juantuc98"
+password = "juan"
 schema = "pagarme"
