@@ -15,6 +15,7 @@ COPY --from=builder /go/bin /app
 WORKDIR /app
 COPY config_docker.toml .
 COPY wait-for.sh .
+COPY Makefile .
 RUN chmod +x wait-for.sh
 EXPOSE 9999
 CMD ./pagarme

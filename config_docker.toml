@@ -1,0 +1,16 @@
+[context]
+host = "0.0.0.0"
+port = "9999"
+debug = true
+docker = true
+
+[database]
+username = "root"
+password = "juan"
+schema = "pagarme"
+
+[database_test]
+username = "root"
+password = "juan"
+schema = "pagarme_test"
+

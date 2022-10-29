@@ -1,0 +1,43 @@
+name: Run unit tests
+
+on:
+  push:
+    branches: ["master"]
+  pull_request:
+    branches: ["master"]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    # Service containers to run with `container-job`
+    services:
+      # Label used to access the service container
+      mysql:
+        # Docker Hub image
+        image: mysql:8.0
+        env:
+          MYSQL_USER: root
+          MYSQL_PASSWORD: juan
+          MYSQL_ROOT_PASSWORD: juan
+          MYSQL_DATABASE: pagarme_test
+        # Set health checks to wait until mysql has started
+        options: >-
+          --health-cmd mysqladmin ping
+          --health-interval 10s
+          --health-timeout 10s
+          --health-retries 10
+        ports:
+          # Maps tcp port 3306 on service container to the host
+          - 3306:3306
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Go 1.18
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.18
+
+      - name: Test
+        run: make tests
