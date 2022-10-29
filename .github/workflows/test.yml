@@ -50,12 +50,8 @@ jobs:
           sudo mv migrate /usr/bin/migrate
           which migrate
 
-      - name: Checkout repo
+      - name: Checkout repo to access Makefile.
         uses: actions/checkout@v3
-
-      - name: Sleep for 30 seconds so MySQL starts gracefully
-        run: sleep 30s
-        shell: bash
 
       - name: Create tables and stored procedures.
         run: make database
