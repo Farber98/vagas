@@ -13,7 +13,7 @@ RUN apk --no-cache add ca-certificates
 COPY --from=builder /go/bin /app
 
 WORKDIR /app
-COPY config.toml .
+COPY config_docker.toml .
 COPY wait-for.sh .
 RUN chmod +x wait-for.sh
 EXPOSE 9999

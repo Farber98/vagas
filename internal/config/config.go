@@ -17,8 +17,8 @@ func Init() *Config {
 	onceConfig.Do(func() {
 		log.Println("Loading config...")
 		c := Config{}
-		if _, err := toml.DecodeFile("./config.toml", &c); err != nil {
-			if _, err := toml.DecodeFile("../../config.toml", &c); err != nil {
+		if _, err := toml.DecodeFile("./config_local.toml", &c); err != nil {
+			if _, err := toml.DecodeFile("./config_docker.toml", &c); err != nil {
 				panic(err)
 			}
 		}
