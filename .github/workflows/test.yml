@@ -32,7 +32,10 @@ jobs:
           - 3306:3306
 
     steps:
-      - uses: actions/checkout@v3
+      - run: |
+          sudo /etc/init.d/mysql start
+          mysql -e 'CREATE DATABASE IF NOT EXISTS pagarme_test;' -ujuan -pjuan
+          mysql -e 'SHOW DATABASES;' -uroot -proot
 
       - name: Set up Go 1.18
         uses: actions/setup-go@v3
