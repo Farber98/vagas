@@ -89,3 +89,25 @@ Você deve criar um serviço com os seguintes requisitos:
 
 ![data model](https://github.com/farber98/vagas/blob/master/internal/docs/dataModel/pagarme.jpg?raw=true)
 
+
+# Solution:
+
+## Run tests:
+```
+$ make tests
+```
+
+## Setup:
+```
+$ docker compose build
+$ docker compose up
+```
+# Clean data:
+```
+$ docker compose down -v
+```
+
+## Stack:
+* Go programming language.
+* Swagger API documentation.
+* Docker setup.
