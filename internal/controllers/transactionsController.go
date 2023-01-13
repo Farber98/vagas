@@ -113,5 +113,5 @@ func (controller *TransactionsController) List(c echo.Context) error {
 		}
 	}
 
-	return c.JSON(http.StatusOK, models.NewDataResponse(constants.OK_TX, tx))
+	return c.JSON(http.StatusOK, models.NewDataResponse(constants.OK, tx))
 }

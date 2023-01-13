@@ -135,6 +135,63 @@ paths:
         - Transactions
       summary: Creates a transaction.
       description: Creates a transaction.
+      parameters:
+        - in: query
+          name: id_client
+          description: Client ID
+          schema:
+            type: number
+          example: 2
       responses:
         "200":
           description: Succesful operation.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    description: Operation status message.
+                    type: string
+                    example: "OK. Transaction created."
+                  data:
+                    description: Response data.
+                    type: object
+                    example:
+                      [
+                        {
+                          "id_tx": 7,
+                          "card_type": "debit",
+                          "card_number": "************1133",
+                          "card_holder": "Juan Cito",
+                          "id_client": 3,
+                          "description": "A very crazy yet no suspicious tx",
+                          "date": "2023-01-13 18:33:04.000000",
+                          "value": "10.00",
+                          "fee": "0.30",
+                          "status": "P",
+                        },
+                        {
+                          "id_tx": 8,
+                          "card_type": "credit",
+                          "card_number": "************5566",
+                          "card_holder": "Juan Cito",
+                          "id_client": 3,
+                          "description": "A very crazy yet no suspicious tx 2",
+                          "date": "2023-02-12 18:33:51.000000",
+                          "value": "10.00",
+                          "fee": "0.50",
+                          "status": "W",
+                        },
+                      ]
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    description: Operation status message.
+                    type: string
+                    example: "ERR. Binding parameters."

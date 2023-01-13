@@ -1,7 +1,7 @@
 package models
 
 type Clients struct {
-	IdClient uint32 `json:"id_client,omitempty"`
+	IdClient uint32 `json:"id_client,omitempty" query:"id_client"`
 	Wallets
 }
 

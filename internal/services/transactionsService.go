@@ -55,16 +55,16 @@ func (srv *TransactionsService) Validate(tx *models.Transactions) error {
 		return errors.New(constants.ERR_CARD_HOLDER)
 	}
 
-	if tx.ExpireDate == "" {
+	if tx.Cards.ExpireDate == "" {
 		return errors.New(constants.ERR_CARD_DATE)
 	}
 
-	date, err := time.Parse(constants.DATE_LAYOUT, tx.ExpireDate)
+	cardDate, err := time.Parse(constants.DATE_LAYOUT, tx.Cards.ExpireDate)
 	if err != nil {
 		return errors.New(constants.ERR_CARD_DATE)
 	}
 
-	if date.Before(time.Now()) {
+	if cardDate.Before(time.Now()) {
 		return errors.New(constants.ERR_CARD_DATE)
 	}
 

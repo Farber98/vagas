@@ -161,8 +161,8 @@ SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
             'id_client', tx.id_client,
             'description', tx.description,
             'date', tx.date,
-            'value', tx.value,
-            'fee', tx.fee,
+            'value', CAST(tx.value AS CHAR),
+            'fee', CAST(tx.fee AS CHAR),
             'status', tx.status
           )), JSON_ARRAY() ) pOut
   FROM    		transactions tx 

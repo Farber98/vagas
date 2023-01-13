@@ -15,17 +15,18 @@ const (
 )
 
 const (
-	ERR_BINDING        = "ERR. Binding parameters."
-	ERR_ID_CLIENT      = "ERR. Invalid client id."
-	ERR_VALUE          = "ERR. Invalid value."
-	ERR_DEFAULT        = "ERR. Please call the administrator."
-	ERR_PAYMENT_METHOD = "ERR. Invalid payment method."
-	ERR_CARD_NUMBER    = "ERR. Invalid card number."
-	ERR_CARD_HOLDER    = "ERR. Invalid card holder."
-	ERR_CARD_DATE      = "ERR. Invalid card date."
-	ERR_CARD_CVV       = "ERR. Invalid card CVV."
+	ERR_BINDING        = "ERR. Binding parameters"
+	ERR_ID_CLIENT      = "ERR. Invalid client id"
+	ERR_VALUE          = "ERR. Invalid value"
+	ERR_DEFAULT        = "ERR. Please call the administrator"
+	ERR_PAYMENT_METHOD = "ERR. Invalid payment method"
+	ERR_CARD_NUMBER    = "ERR. Invalid card number"
+	ERR_CARD_HOLDER    = "ERR. Invalid card holder"
+	ERR_CARD_DATE      = "ERR. Invalid card date"
+	ERR_CARD_CVV       = "ERR. Invalid card CVV"
 )
 
 const (
-	OK_TX = "OK. Transaction created."
+	OK    = "OK"
+	OK_TX = OK + " Transaction created"
 )
