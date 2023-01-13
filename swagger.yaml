@@ -11,8 +11,8 @@ servers:
 tags:
   - name: General
     description: Test to see if the API is up
-  - name: Projects
-    description: Projects operations.
+  - name: Transactions
+    description: Transactions operations.
 
 paths:
   /hello:
@@ -21,6 +21,120 @@ paths:
         - General
       summary: Test to see if the API is up
       description: Test to see if the API is up
+      responses:
+        "200":
+          description: Succesful operation.
+
+  /tx/create:
+    post:
+      tags:
+        - Transactions
+      summary: Creates a transaction.
+      description: Creates a transaction.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_client:
+                  description: Client ID.
+                  type: number
+                  example: 2
+                value:
+                  description: Tx value.
+                  type: string
+                  example: "10"
+                payment_method:
+                  description: Payment method.
+                  type: string
+                  example: "debit"
+                card_number:
+                  description: Card number.
+                  type: string
+                  example: "1122113311221133"
+                card_holder:
+                  description: Card holder.
+                  type: string
+                  example: "Juan Cito"
+                expire_date:
+                  description: Card expire date.
+                  type: string
+                  example: "2023-01-02"
+                cvv:
+                  description: Card security code.
+                  type: string
+                  example: "123"
+                description:
+                  description: Tx description.
+                  type: string
+                  example: "A very crazy yet no suspicious tx"
+              required:
+                - id_client
+                - value
+                - payment_method
+                - card_number
+                - card_holder
+                - expire_date
+                - cvv
+      responses:
+        "200":
+          description: Succesful operation.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    description: Operation status message.
+                    type: string
+                    example: "OK. Transaction created."
+                  data:
+                    description: Response data.
+                    type: object
+                    example:
+                      {
+                        "id_tx": 5,
+                        "id_card": 1,
+                        "card_type": "debit",
+                        "card_number": "************1133",
+                        "card_holder": "Juan Cito",
+                        "id_client": 2,
+                        "description": "A very crazy yet no suspicious tx",
+                        "date": "2023-01-12 20:59:09.000000",
+                        "value": "10.00",
+                        "fee": "0.30",
+                        "status": "P",
+                      }
+        "400":
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    description: Operation status message.
+                    type: string
+                    example: "ERR. Invalid client id."
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    description: Operation status message.
+                    type: string
+                    example: "ERR. Binding parameters."
+
+  /tx/list:
+    get:
+      tags:
+        - Transactions
+      summary: Creates a transaction.
+      description: Creates a transaction.
       responses:
         "200":
           description: Succesful operation.

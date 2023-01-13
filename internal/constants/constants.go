@@ -1,7 +1,7 @@
 package constants
 
 const (
-	DATE_LAYOUT = "2006-01-02 15:04:05"
+	DATE_LAYOUT = "2006-01-02"
 )
 
 const (

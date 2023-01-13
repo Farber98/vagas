@@ -18,6 +18,7 @@ type TransactionsController struct {
 
 func (controller *TransactionsController) LoadRoutes(gr *echo.Group) {
 	gr.POST("/tx/create", controller.Create)
+	gr.GET("/tx/list", controller.List)
 }
 
 func (controller *TransactionsController) Create(c echo.Context) error {
@@ -73,7 +74,7 @@ func (controller *TransactionsController) Create(c echo.Context) error {
 	}
 
 	if clientCard == nil {
-		clientCard, err = controller.ClientsService.RegisterCard(card.IdCard, client.IdClient)
+		_, err = controller.ClientsService.RegisterCard(card.IdCard, client.IdClient)
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, models.NewMsgResponse(constants.ERR_DEFAULT))
 		}
@@ -89,6 +90,23 @@ func (controller *TransactionsController) Create(c echo.Context) error {
 	}
 
 	tx, err = controller.TransactionsService.Create(tx)
+	if err != nil {
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, models.NewMsgResponse(constants.ERR_DEFAULT))
+		}
+	}
+
+	return c.JSON(http.StatusOK, models.NewDataResponse(constants.OK_TX, tx))
+}
+
+func (controller *TransactionsController) List(c echo.Context) error {
+	reqClient := &models.Clients{}
+
+	if err := c.Bind(reqClient); err != nil {
+		return c.JSON(http.StatusInternalServerError, models.NewMsgResponse(constants.ERR_BINDING))
+	}
+
+	tx, err := controller.ClientsService.ListTransactions(reqClient.IdClient)
 	if err != nil {
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, models.NewMsgResponse(constants.ERR_DEFAULT))

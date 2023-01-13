@@ -40,7 +40,7 @@ func Init(db *infraestructure.DbHandler) *echo.Echo {
 		arrayControllers := make([]interfaces.IController, 0)
 		arrayControllers = append(arrayControllers, &controllers.HelloController{})
 		arrayControllers = append(arrayControllers, &controllers.ClientsController{ClientsService: clientsService, CardsService: cardsService})
-		arrayControllers = append(arrayControllers, &controllers.TransactionsController{ClientsService: clientsService, TransactionsService: txsService})
+		arrayControllers = append(arrayControllers, &controllers.TransactionsController{ClientsService: clientsService, TransactionsService: txsService, CardsService: cardsService})
 
 		group := e.Group("")
 		for _, c := range arrayControllers {
