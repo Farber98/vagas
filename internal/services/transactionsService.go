@@ -64,7 +64,7 @@ func (srv *TransactionsService) Validate(tx *models.Transactions) error {
 		return errors.New(constants.ERR_CARD_DATE)
 	}
 
-	if date.After(time.Now()) {
+	if date.Before(time.Now()) {
 		return errors.New(constants.ERR_CARD_DATE)
 	}
 
